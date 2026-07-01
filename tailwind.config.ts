@@ -39,6 +39,8 @@ const config: Config = {
       borderRadius: { "2xl": "1.25rem", "3xl": "1.75rem" },
       boxShadow: {
         card: "0 1px 2px rgba(16,24,40,.04), 0 8px 24px -12px rgba(16,24,40,.12)",
+        glass: "0 1px 1px rgba(16,24,40,.04), 0 12px 32px -14px rgba(16,24,40,.20)",
+        glow: "0 10px 30px -8px rgba(18,187,98,.45)",
       },
     },
   },

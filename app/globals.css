@@ -8,11 +8,33 @@
 
 html { -webkit-text-size-adjust: 100%; }
 body {
-  @apply bg-neutral-50 text-neutral-900 antialiased;
+  @apply text-neutral-900 antialiased;
+  background-color: #fbfbfa;
 }
 
 /* Big, steady timer numerals */
 .tabular { font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
+
+/* ---- Liquid-glass surfaces ------------------------------------------------
+   Frosted translucency for chrome that has content scrolling behind it
+   (header, bottom nav). Falls back to a near-opaque panel where the browser
+   can't blur, so text never sits on a see-through background. */
+.glass {
+  background-color: rgba(255, 255, 255, 0.62);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+.glass-strong {
+  background-color: rgba(255, 255, 255, 0.78);
+  -webkit-backdrop-filter: saturate(180%) blur(24px);
+  backdrop-filter: saturate(180%) blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass { background-color: rgba(255, 255, 255, 0.92); }
+  .glass-strong { background-color: rgba(255, 255, 255, 0.96); }
+}
 
 /* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {

@@ -13,16 +13,18 @@ const items = [
 export function BottomNav() {
   const path = usePathname();
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-neutral-200 bg-white/90 backdrop-blur md:hidden">
-      <div className="mx-auto flex max-w-lg items-stretch justify-around px-2 pb-[env(safe-area-inset-bottom)]">
+    <nav className="glass fixed inset-x-0 bottom-0 z-40 rounded-t-3xl border-x-0 border-b-0 shadow-[0_-8px_24px_-16px_rgba(16,24,40,.25)] md:hidden">
+      <div className="mx-auto flex max-w-lg items-stretch justify-around px-3 pb-[env(safe-area-inset-bottom)] pt-1.5">
         {items.map((it) => {
           const active = path === it.href || path.startsWith(it.href + "/");
           return (
             <Link
               key={it.href}
               href={it.href}
-              className={`flex flex-1 flex-col items-center gap-0.5 py-2.5 text-[11px] font-medium ${
-                active ? "text-mint-600" : "text-neutral-400"
+              className={`flex flex-1 flex-col items-center gap-0.5 rounded-2xl py-2 text-[11px] font-medium transition ${
+                active
+                  ? "bg-mint-100/70 text-mint-700"
+                  : "text-neutral-400 hover:text-neutral-600"
               }`}
             >
               <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

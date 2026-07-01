@@ -100,7 +100,7 @@ export function WorkoutCard({ workout }: { workout: WorkoutWithBlocks }) {
   return (
     <Link
       href={`/workouts/${workout.id}`}
-      className="group block rounded-3xl border border-neutral-200/70 bg-white p-5 shadow-card transition hover:-translate-y-0.5 hover:border-mint-200 hover:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-mint-400"
+      className="group block rounded-3xl border border-white/70 bg-white/85 p-5 shadow-card transition hover:-translate-y-0.5 hover:border-mint-200 hover:shadow-glass focus:outline-none focus-visible:ring-2 focus-visible:ring-mint-400"
     >
       <div className="mb-3 flex items-start justify-between gap-3">
         <div>
