@@ -125,3 +125,44 @@ export const INTENSITY_STYLES: Record<Intensity, string> = {
   high: "bg-heat-50 text-heat-700",
   max: "bg-heat-100 text-heat-800",
 };
+
+// ---- User training profile + recommendation scoring ----
+export interface Profile {
+  display_name: string | null;
+  training_for: string | null;
+  primary_goal: string | null;
+  primary_sport: string | null;
+  level: Level | null;
+}
+
+export function hasTrainingPrefs(p: Profile | null): boolean {
+  return !!(p && (p.primary_goal || p.primary_sport || p.level));
+}
+
+// Score public workouts against the profile: goal match weighs most,
+// then sport, then level. Returns the best matches only.
+export function recommendWorkouts(
+  profile: Profile | null,
+  workouts: WorkoutWithBlocks[],
+  limit = 3,
+): WorkoutWithBlocks[] {
+  if (!profile) return [];
+  return workouts
+    .filter((w) => w.is_public)
+    .map((w) => {
+      let score = 0;
+      if (
+        profile.primary_goal &&
+        (w.goal === profile.primary_goal ||
+          w.training_effects.includes(profile.primary_goal))
+      )
+        score += 3;
+      if (profile.primary_sport && w.sport === profile.primary_sport) score += 2;
+      if (profile.level && w.level === profile.level) score += 1;
+      return { w, score };
+    })
+    .filter((x) => x.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit)
+    .map((x) => x.w);
+}

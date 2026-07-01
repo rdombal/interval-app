@@ -136,6 +136,34 @@ export async function logSession(input: {
   revalidatePath("/dashboard");
 }
 
+export async function saveProfile(input: {
+  display_name: string;
+  training_for: string;
+  primary_goal: string | null;
+  primary_sport: string | null;
+  level: string | null;
+}) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/login");
+
+  const { error } = await supabase.from("profiles").upsert({
+    id: user.id,
+    display_name: input.display_name.trim() || null,
+    training_for: input.training_for.trim() || null,
+    primary_goal: input.primary_goal,
+    primary_sport: input.primary_sport,
+    level: input.level,
+    updated_at: new Date().toISOString(),
+  });
+  if (error) throw new Error(error.message);
+
+  revalidatePath("/dashboard");
+  revalidatePath("/profile");
+}
+
 export async function signOut() {
   const supabase = await createClient();
   await supabase.auth.signOut();

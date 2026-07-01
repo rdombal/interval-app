@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
-import type { WorkoutWithBlocks } from "@/lib/types";
+import type { WorkoutWithBlocks, Profile } from "@/lib/types";
 
 const WORKOUT_SELECT =
   "*, workout_blocks(id, position, type, name, duration_seconds, round_group, rounds)";
@@ -16,6 +16,27 @@ export async function getCurrentUser() {
     .eq("id", user.id)
     .maybeSingle();
   return { id: user.id, email: user.email, name: profile?.display_name ?? user.email?.split("@")[0] };
+}
+
+export async function getProfile(): Promise<Profile> {
+  const empty: Profile = {
+    display_name: null,
+    training_for: null,
+    primary_goal: null,
+    primary_sport: null,
+    level: null,
+  };
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return empty;
+  const { data } = await supabase
+    .from("profiles")
+    .select("display_name, training_for, primary_goal, primary_sport, level")
+    .eq("id", user.id)
+    .maybeSingle();
+  return (data as Profile) ?? empty;
 }
 
 // All workouts the user can see: public library + their own.

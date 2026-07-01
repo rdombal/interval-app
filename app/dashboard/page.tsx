@@ -3,19 +3,24 @@ import { AppShell } from "@/components/AppShell";
 import { WorkoutCard } from "@/components/WorkoutCard";
 import {
   getCurrentUser,
+  getProfile,
   getVisibleWorkouts,
   getRecentSessions,
 } from "@/lib/queries";
-import { fmtClock } from "@/lib/types";
+import { fmtClock, hasTrainingPrefs, recommendWorkouts } from "@/lib/types";
 
 export default async function Dashboard() {
-  const [user, workouts, sessions] = await Promise.all([
+  const [user, profile, workouts, sessions] = await Promise.all([
     getCurrentUser(),
+    getProfile(),
     getVisibleWorkouts(),
     getRecentSessions(4),
   ]);
 
   const library = workouts.filter((w) => w.is_public).slice(0, 4);
+  const recommended = recommendWorkouts(profile, workouts, 3);
+  const hasPrefs = hasTrainingPrefs(profile);
+  const focus = profile.training_for || profile.primary_goal?.replace("_", " ");
 
   return (
     <AppShell name={user?.name}>
@@ -38,7 +43,7 @@ export default async function Dashboard() {
         </Link>
         <Link
           href="/browse"
-          className="group flex items-center justify-between rounded-3xl border border-neutral-200 bg-white p-6 shadow-card transition hover:border-mint-200"
+          className="group flex items-center justify-between rounded-3xl border border-white/70 bg-white/85 p-6 shadow-card transition hover:border-mint-200"
         >
           <div>
             <p className="text-lg font-bold text-neutral-900">Start a workout</p>
@@ -47,6 +52,43 @@ export default async function Dashboard() {
           <span className="text-2xl text-mint-500 transition group-hover:translate-x-1">▶</span>
         </Link>
       </div>
+
+      {/* Recommendations — or a nudge to set up the profile */}
+      {hasPrefs && recommended.length > 0 ? (
+        <section className="mt-10">
+          <div className="mb-3 flex items-center justify-between">
+            <h2 className="text-sm font-bold uppercase tracking-wide text-neutral-400">
+              Recommended for you
+            </h2>
+            <Link href="/profile" className="text-sm font-semibold text-mint-600">
+              Edit profile
+            </Link>
+          </div>
+          {focus && (
+            <p className="mb-3 -mt-1 text-sm text-neutral-500">
+              Because you&apos;re training for {focus}.
+            </p>
+          )}
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {recommended.map((w) => (
+              <WorkoutCard key={w.id} workout={w} />
+            ))}
+          </div>
+        </section>
+      ) : (
+        <Link
+          href="/profile"
+          className="group mt-8 flex items-center justify-between rounded-3xl border border-dashed border-mint-300 bg-mint-50/60 p-5 transition hover:bg-mint-50"
+        >
+          <div>
+            <p className="font-bold text-neutral-900">Set up your training profile</p>
+            <p className="text-sm text-neutral-500">
+              Tell us what you&apos;re training for and we&apos;ll recommend sessions.
+            </p>
+          </div>
+          <span className="text-xl text-mint-600 transition group-hover:translate-x-1">→</span>
+        </Link>
+      )}
 
       {/* Recent sessions */}
       {sessions.length > 0 && (
@@ -58,7 +100,7 @@ export default async function Dashboard() {
             {sessions.map((s) => (
               <div
                 key={s.id}
-                className="flex items-center justify-between rounded-2xl border border-neutral-200 bg-white px-4 py-3"
+                className="flex items-center justify-between rounded-2xl border border-white/70 bg-white/85 px-4 py-3"
               >
                 <div>
                   <p className="font-semibold text-neutral-900">{s.workout_name}</p>
