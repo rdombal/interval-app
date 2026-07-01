@@ -10,6 +10,8 @@ import {
   fmtClock,
   fmtDuration,
   PHASE_STYLES,
+  PHASE_TIPS,
+  PhaseType,
 } from "@/lib/types";
 
 export default async function WorkoutDetail({
@@ -29,6 +31,9 @@ export default async function WorkoutDetail({
   const phases = expandTimeline(blocks);
   const total = totalSeconds(blocks);
   const workCount = phases.filter((p) => p.type === "work").length;
+
+  const phaseOrder: PhaseType[] = ["warmup", "work", "rest", "recovery", "cooldown"];
+  const presentPhases = phaseOrder.filter((t) => blocks.some((b) => b.type === t));
 
   const facts: [string, string][] = [
     ["Total time", fmtDuration(total)],
@@ -123,6 +128,32 @@ export default async function WorkoutDetail({
           ))}
         </ol>
       </div>
+
+      {/* Do-it-anywhere movement ideas per phase */}
+      {presentPhases.length > 0 && (
+        <div className="mt-6">
+          <p className="mb-3 text-sm font-bold uppercase tracking-wide text-neutral-400">
+            Ideas for this workout
+          </p>
+          <div className="space-y-2">
+            {presentPhases.map((t) => (
+              <div
+                key={t}
+                className="flex gap-3 rounded-2xl border border-neutral-100 bg-white px-4 py-3"
+              >
+                <span className={`mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full ${PHASE_STYLES[t].bar}`} />
+                <div>
+                  <p className="font-semibold text-neutral-800">{PHASE_STYLES[t].label}</p>
+                  <p className="text-sm text-neutral-500">{PHASE_TIPS[t]}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <p className="mt-3 text-xs text-neutral-400">
+            Suggestions only — do what suits you. The timer stays the same whatever you choose.
+          </p>
+        </div>
+      )}
 
       {/* Sticky action bar */}
       <div className="sticky bottom-20 mt-8 flex gap-3 md:bottom-6">

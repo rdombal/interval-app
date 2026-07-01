@@ -166,3 +166,17 @@ export function recommendWorkouts(
     .slice(0, limit)
     .map((x) => x.w);
 }
+
+// Compact, do-it-anywhere movement ideas shown on the workout detail page.
+export const PHASE_TIPS: Record<PhaseType, string> = {
+  warmup:
+    "Easy pace with light dynamic moves — leg swings, arm circles, a few build-up strides.",
+  work:
+    "Go hard on whatever you've got: sprint in place, burpees, high knees, or jump squats — or an assault bike, rower, or hill sprint.",
+  rest:
+    "Full rest. Stand tall or walk it off, drop your shoulders, and get your breath back.",
+  recovery:
+    "Keep moving easy: a slow jog, gentle spin, or relaxed walk to stay loose.",
+  cooldown:
+    "Ease down with an easy walk or spin, then a few gentle stretches.",
+};
