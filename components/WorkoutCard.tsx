@@ -27,27 +27,36 @@ export function Badge({
 }
 
 export function IntensityBadge({ intensity }: { intensity: Intensity }) {
-  return (
-    <Badge className={INTENSITY_STYLES[intensity]}>{intensity}</Badge>
-  );
+  return <Badge className={INTENSITY_STYLES[intensity]}>{intensity}</Badge>;
 }
 
-// The signature element: a stacked bar where each segment is a phase,
-// width proportional to its duration. Work segments glow in heat-red.
+const PHASE_ORDER = ["warmup", "work", "rest", "recovery", "cooldown"] as const;
+
+// The signature element: a stacked bar where each segment is a phase, width
+// proportional to its duration. `legend` shows a colour key:
+//   "dots" = compact coloured dots (used on cards)
+//   "full" = dots + labels (used on detail + builder previews)
 export function TimelinePreview({
   blocks,
   height = "h-2.5",
+  legend = "none",
   showLabels = false,
 }: {
   blocks: WorkoutBlock[];
   height?: string;
+  legend?: "none" | "dots" | "full";
   showLabels?: boolean;
 }) {
   const phases = expandTimeline(blocks);
   const total = phases.reduce((s, p) => s + p.seconds, 0) || 1;
+  const mode = legend !== "none" ? legend : showLabels ? "full" : "none";
+  const present = PHASE_ORDER.filter((t) => phases.some((p) => p.type === t));
+
   return (
     <div>
-      <div className={`flex w-full overflow-hidden rounded-full ${height}`}>
+      <div
+        className={`flex w-full overflow-hidden rounded-full ring-1 ring-black/5 ${height}`}
+      >
         {phases.map((p) => (
           <div
             key={p.index}
@@ -57,16 +66,27 @@ export function TimelinePreview({
           />
         ))}
       </div>
-      {showLabels && (
-        <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-neutral-500">
-          {(["warmup", "work", "rest", "recovery", "cooldown"] as const)
-            .filter((t) => phases.some((p) => p.type === t))
-            .map((t) => (
-              <span key={t} className="inline-flex items-center gap-1.5">
-                <span className={`h-2 w-2 rounded-full ${PHASE_STYLES[t].bar}`} />
-                {PHASE_STYLES[t].label}
-              </span>
-            ))}
+
+      {mode === "dots" && (
+        <div className="mt-2 flex flex-wrap items-center gap-1.5">
+          {present.map((t) => (
+            <span
+              key={t}
+              title={PHASE_STYLES[t].label}
+              className={`h-2 w-2 rounded-full ${PHASE_STYLES[t].bar}`}
+            />
+          ))}
+        </div>
+      )}
+
+      {mode === "full" && (
+        <div className="mt-2.5 flex flex-wrap gap-x-3 gap-y-1 text-xs text-neutral-500">
+          {present.map((t) => (
+            <span key={t} className="inline-flex items-center gap-1.5">
+              <span className={`h-2 w-2 rounded-full ${PHASE_STYLES[t].bar}`} />
+              {PHASE_STYLES[t].label}
+            </span>
+          ))}
         </div>
       )}
     </div>
@@ -94,7 +114,7 @@ export function WorkoutCard({ workout }: { workout: WorkoutWithBlocks }) {
         <IntensityBadge intensity={workout.intensity} />
       </div>
 
-      <TimelinePreview blocks={blocks} />
+      <TimelinePreview blocks={blocks} legend="dots" />
 
       <div className="mt-4 flex items-center justify-between text-sm text-neutral-600">
         <span className="font-semibold tabular text-neutral-900">

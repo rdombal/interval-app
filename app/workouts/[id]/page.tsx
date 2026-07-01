@@ -70,8 +70,11 @@ export default async function WorkoutDetail({
           </Badge>
         ))}
         {workout.tags.map((t) => (
-          <Badge key={t} className="bg-neutral-100 text-neutral-600">
-            #{t}
+          <Badge
+            key={t}
+            className="border border-neutral-200 bg-neutral-50 capitalize text-neutral-600"
+          >
+            {t.replace(/-/g, " ")}
           </Badge>
         ))}
       </div>
@@ -80,7 +83,7 @@ export default async function WorkoutDetail({
         <p className="mb-3 text-sm font-bold uppercase tracking-wide text-neutral-400">
           Structure
         </p>
-        <TimelinePreview blocks={blocks} height="h-3" showLabels />
+        <TimelinePreview blocks={blocks} height="h-3" legend="full" />
       </div>
 
       {/* Facts grid */}

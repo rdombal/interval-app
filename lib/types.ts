@@ -112,11 +112,11 @@ export const PHASE_STYLES: Record<
   PhaseType,
   { label: string; bar: string; text: string; soft: string; ring: string }
 > = {
-  warmup:   { label: "Warm up",  bar: "bg-amber-400",  text: "text-amber-600",   soft: "bg-amber-50",   ring: "stroke-amber-400" },
-  work:     { label: "Work",     bar: "bg-heat-500",   text: "text-heat-600",    soft: "bg-heat-50",    ring: "stroke-heat-500" },
-  rest:     { label: "Rest",     bar: "bg-sky-400",    text: "text-sky-600",     soft: "bg-sky-50",     ring: "stroke-sky-400" },
-  recovery: { label: "Recovery", bar: "bg-mint-400",   text: "text-mint-600",    soft: "bg-mint-50",    ring: "stroke-mint-400" },
-  cooldown: { label: "Cool down",bar: "bg-indigo-400", text: "text-indigo-600",  soft: "bg-indigo-50",  ring: "stroke-indigo-400" },
+  warmup:   { label: "Warm up",  bar: "bg-sky-400",     text: "text-sky-600",     soft: "bg-sky-50",     ring: "stroke-sky-400" },
+  work:     { label: "Work",     bar: "bg-heat-500",    text: "text-heat-600",    soft: "bg-heat-50",    ring: "stroke-heat-500" },
+  rest:     { label: "Rest",     bar: "bg-emerald-400", text: "text-emerald-600", soft: "bg-emerald-50", ring: "stroke-emerald-400" },
+  recovery: { label: "Recovery", bar: "bg-mint-400",    text: "text-mint-600",    soft: "bg-mint-50",    ring: "stroke-mint-400" },
+  cooldown: { label: "Cool down",bar: "bg-blue-500",    text: "text-blue-600",    soft: "bg-blue-50",    ring: "stroke-blue-500" },
 };
 
 export const INTENSITY_STYLES: Record<Intensity, string> = {

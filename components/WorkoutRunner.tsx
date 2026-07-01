@@ -27,11 +27,11 @@ interface Step {
 // the app's phase identity (work = heat, etc.) but as full-bleed backgrounds.
 const SCREEN: Record<StepKind, { bg: string; accent: string; ring: string; label: string }> = {
   ready:    { bg: "bg-neutral-900", accent: "text-neutral-300", ring: "stroke-neutral-500", label: "Get ready" },
-  warmup:   { bg: "bg-amber-500",   accent: "text-amber-50",    ring: "stroke-amber-100",   label: "Warm up" },
+  warmup:   { bg: "bg-sky-500",     accent: "text-sky-50",      ring: "stroke-sky-100",     label: "Warm up" },
   work:     { bg: "bg-heat-500",    accent: "text-heat-50",     ring: "stroke-heat-100",    label: "Work" },
-  rest:     { bg: "bg-sky-500",     accent: "text-sky-50",      ring: "stroke-sky-100",     label: "Rest" },
+  rest:     { bg: "bg-emerald-500", accent: "text-emerald-50",  ring: "stroke-emerald-100", label: "Rest" },
   recovery: { bg: "bg-mint-500",    accent: "text-mint-50",     ring: "stroke-mint-100",    label: "Recovery" },
-  cooldown: { bg: "bg-indigo-500",  accent: "text-indigo-50",   ring: "stroke-indigo-100",  label: "Cool down" },
+  cooldown: { bg: "bg-blue-600",    accent: "text-blue-50",     ring: "stroke-blue-100",    label: "Cool down" },
 };
 
 export function WorkoutRunner({ workout }: { workout: WorkoutWithBlocks }) {
