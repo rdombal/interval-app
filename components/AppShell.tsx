@@ -22,7 +22,7 @@ export function AppShell({
 
       <AppHeader name={name} />
       <main className="mx-auto max-w-5xl px-4 pb-28 pt-6 md:pb-12">{children}</main>
-      <BottomNav />
+      <BottomNav signedIn={!!name} />
     </div>
   );
 }

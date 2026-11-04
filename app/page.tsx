@@ -32,9 +32,9 @@ export default async function Landing() {
               <span className="text-mint-600"> fighting your watch.</span>
             </h1>
             <p className="mt-5 max-w-md text-lg text-neutral-600">
-              Build a warmup, intervals, rounds and a cooldown in under a minute.
-              Save them. Then run a big, calm, motivating timer that talks you
-              through every phase.
+              Run proven protocols like Tabata and the Norwegian 4×4, or build
+              your own in under a minute. Then follow a big, calm timer that
+              cues you through every phase.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
@@ -44,7 +44,7 @@ export default async function Landing() {
                 Get started — it&apos;s free
               </Link>
               <Link
-                href="/login?next=/browse"
+                href="/browse"
                 className="rounded-2xl border border-neutral-200 bg-white px-6 py-3.5 text-sm font-bold text-neutral-700 hover:border-neutral-300"
               >
                 Browse the library

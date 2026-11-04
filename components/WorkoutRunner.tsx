@@ -34,7 +34,13 @@ const SCREEN: Record<StepKind, { bg: string; accent: string; ring: string; label
   cooldown: { bg: "bg-blue-600",    accent: "text-blue-50",     ring: "stroke-blue-100",    label: "Cool down" },
 };
 
-export function WorkoutRunner({ workout }: { workout: WorkoutWithBlocks }) {
+export function WorkoutRunner({
+  workout,
+  signedIn,
+}: {
+  workout: WorkoutWithBlocks;
+  signedIn: boolean;
+}) {
   const router = useRouter();
 
   const steps = useMemo<Step[]>(() => {
@@ -297,12 +303,24 @@ export function WorkoutRunner({ workout }: { workout: WorkoutWithBlocks }) {
               Run it again
             </button>
             <Link
-              href="/dashboard"
+              href={signedIn ? "/dashboard" : "/browse"}
               className="block w-full rounded-2xl border border-neutral-700 px-6 py-4 text-base font-bold text-neutral-200 hover:bg-neutral-900"
             >
               Done
             </Link>
           </div>
+
+          {!signedIn && (
+            <p className="mt-6 text-sm text-neutral-400">
+              <Link
+                href={`/login?mode=signup&next=${encodeURIComponent(`/workouts/${workout.id}`)}`}
+                className="font-semibold text-mint-400 hover:text-mint-300"
+              >
+                Create a free account
+              </Link>{" "}
+              to save workouts, build your own, and keep a session history.
+            </p>
+          )}
         </div>
       </div>
     );

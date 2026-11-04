@@ -8,7 +8,7 @@ export default async function LoginPage({
 }) {
   const sp = await searchParams;
   const isSignup = sp.mode === "signup";
-  const next = sp.next ?? "/dashboard";
+  const next = sp.next?.startsWith("/") && !sp.next.startsWith("//") ? sp.next : "/dashboard";
 
   return (
     <div className="grid min-h-dvh place-items-center bg-white px-5">
@@ -27,7 +27,7 @@ export default async function LoginPage({
 
         {sp.error && (
           <p className="mt-5 rounded-xl bg-heat-50 px-4 py-3 text-sm text-heat-700">
-            {decodeURIComponent(sp.error)}
+            {sp.error}
           </p>
         )}
 

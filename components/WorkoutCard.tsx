@@ -8,6 +8,7 @@ import {
   INTENSITY_STYLES,
   Intensity,
   WorkoutWithBlocks,
+  label,
 } from "@/lib/types";
 
 export function Badge({
@@ -108,7 +109,7 @@ export function WorkoutCard({ workout }: { workout: WorkoutWithBlocks }) {
             {workout.name}
           </h3>
           <p className="mt-0.5 text-sm capitalize text-neutral-500">
-            {workout.sport} · {workout.goal.replace("_", " ")}
+            {label(workout.sport)} · {label(workout.goal)}
           </p>
         </div>
         <IntensityBadge intensity={workout.intensity} />
@@ -121,7 +122,10 @@ export function WorkoutCard({ workout }: { workout: WorkoutWithBlocks }) {
           {fmtDuration(totalSeconds(blocks))}
         </span>
         <span className="text-neutral-400">
-          {workCount} {workCount === 1 ? "interval" : "intervals"} · {workout.level}
+          {workCount > 0
+            ? `${workCount} ${workCount === 1 ? "interval" : "intervals"}`
+            : `${phases.length} ${phases.length === 1 ? "phase" : "phases"}`}{" "}
+          · {workout.level}
         </span>
       </div>
     </Link>

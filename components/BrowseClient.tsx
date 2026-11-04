@@ -7,6 +7,7 @@ import {
   totalSeconds,
   Intensity,
   Level,
+  label,
 } from "@/lib/types";
 
 type DurationBucket = "any" | "short" | "medium" | "long";
@@ -108,9 +109,9 @@ export function BrowseClient({ workouts }: { workouts: WorkoutWithBlocks[] }) {
   if (intensity !== "any")
     active.push({ label: intensity, clear: () => setIntensity("any") });
   if (level !== "any") active.push({ label: level, clear: () => setLevel("any") });
-  if (sport !== "any") active.push({ label: sport, clear: () => setSport("any") });
+  if (sport !== "any") active.push({ label: label(sport), clear: () => setSport("any") });
   if (effect !== "any")
-    active.push({ label: effect.replace("_", " "), clear: () => setEffect("any") });
+    active.push({ label: label(effect), clear: () => setEffect("any") });
   if (location !== "any")
     active.push({ label: location, clear: () => setLocation("any") });
 
@@ -208,7 +209,7 @@ export function BrowseClient({ workouts }: { workouts: WorkoutWithBlocks[] }) {
             </Chip>
             {sports.map((s) => (
               <Chip key={s} active={sport === s} onClick={() => setSport(s)}>
-                {s}
+                {label(s)}
               </Chip>
             ))}
           </Section>
@@ -218,7 +219,7 @@ export function BrowseClient({ workouts }: { workouts: WorkoutWithBlocks[] }) {
             </Chip>
             {effects.map((e) => (
               <Chip key={e} active={effect === e} onClick={() => setEffect(e)}>
-                {e.replace("_", " ")}
+                {label(e)}
               </Chip>
             ))}
           </Section>

@@ -7,7 +7,7 @@ import {
   getVisibleWorkouts,
   getRecentSessions,
 } from "@/lib/queries";
-import { fmtClock, hasTrainingPrefs, recommendWorkouts } from "@/lib/types";
+import { fmtClock, hasTrainingPrefs, recommendWorkouts, label } from "@/lib/types";
 
 export default async function Dashboard() {
   const [user, profile, workouts, sessions] = await Promise.all([
@@ -20,7 +20,7 @@ export default async function Dashboard() {
   const library = workouts.filter((w) => w.is_public).slice(0, 4);
   const recommended = recommendWorkouts(profile, workouts, 3);
   const hasPrefs = hasTrainingPrefs(profile);
-  const focus = profile.training_for || profile.primary_goal?.replace("_", " ");
+  const focus = profile.training_for || (profile.primary_goal ? label(profile.primary_goal) : null);
 
   return (
     <AppShell name={user?.name}>

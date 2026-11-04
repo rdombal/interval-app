@@ -4,8 +4,9 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
 function safeNext(next: FormDataEntryValue | null): string {
-  const n = typeof next === "string" ? next : "/dashboard";
-  return n.startsWith("/") ? n : "/dashboard";
+  const n = typeof next === "string" ? next : "";
+  // Same-site paths only: "//host" or a slash-backslash would leave the site.
+  return n.startsWith("/") && !n.startsWith("//") && !n.startsWith("/\\") ? n : "/dashboard";
 }
 
 export async function signIn(formData: FormData) {

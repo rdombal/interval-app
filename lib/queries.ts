@@ -15,7 +15,7 @@ export async function getCurrentUser() {
     .select("display_name")
     .eq("id", user.id)
     .maybeSingle();
-  return { id: user.id, email: user.email, name: profile?.display_name ?? user.email?.split("@")[0] };
+  return { id: user.id, email: user.email, name: profile?.display_name || user.email?.split("@")[0] || "Athlete" };
 }
 
 export async function getProfile(): Promise<Profile> {

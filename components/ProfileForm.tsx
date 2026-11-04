@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Profile } from "@/lib/types";
+import { Profile, label as fmtLabel } from "@/lib/types";
 import { saveProfile } from "@/app/actions";
 
 const GOALS = ["conditioning", "endurance", "speed", "fat_loss", "vo2max", "recovery"];
@@ -46,7 +46,7 @@ function Choice({
               : "border-neutral-200 bg-white/80 text-neutral-600 hover:border-neutral-300"
           }`}
         >
-          {o.replace("_", " ")}
+          {fmtLabel(o)}
         </button>
       ))}
     </div>

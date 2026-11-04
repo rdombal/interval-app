@@ -3,7 +3,8 @@ import { NextResponse, type NextRequest } from "next/server";
 
 type CookieToSet = { name: string; value: string; options: CookieOptions };
 
-const PROTECTED = ["/dashboard", "/create", "/saved", "/run", "/sessions"];
+// /browse, /workouts and /run stay public so visitors can try a workout.
+const PROTECTED = ["/dashboard", "/create", "/saved", "/sessions", "/profile"];
 
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request });
