@@ -1,4 +1,6 @@
-# Interval — build & run interval workouts
+# Interval: build & run interval workouts
+
+**Live:** [interval-app-ten.vercel.app](https://interval-app-ten.vercel.app) · browse and run any workout without an account.
 
 A mobile-first web app for planning, saving, browsing, and running interval
 training sessions. Build a warmup, work/rest intervals, rounds, and a cooldown
@@ -12,6 +14,9 @@ ready to deploy on **Vercel**.
 
 - **Auth** — email/password sign up & log in via Supabase Auth.
 - **Dashboard** — quick actions, recent sessions, a peek at the library.
+- **Research-backed library**: 12 protocols from published studies, including
+  Tabata, the Norwegian 4×4 (Helgerud/NTNU), 10-20-30 (Bangsbo), Billat 30/30,
+  Gibala's one-minute workout and the 7-minute workout (Klika & Jordan).
 - **Browse** — searchable, filterable library (duration, intensity, level,
   sport, training effect, location).
 - **Workout detail** — overview, facts grid, full phase-by-phase timeline,
@@ -42,7 +47,8 @@ At [supabase.com](https://supabase.com), create a project. Then in the
 
 1. `supabase/schema.sql` — tables, enums, the auto-profile trigger, and Row
    Level Security policies.
-2. `supabase/seed.sql` — six curated public library workouts.
+2. `supabase/seed.sql` — six starter library workouts.
+3. Everything in `supabase/migrations/`, oldest first.
 
 > Auth note: in **Authentication → Providers → Email**, you can turn off
 > "Confirm email" for the fastest local testing, or leave it on — the included

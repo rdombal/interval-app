@@ -10,6 +10,7 @@ import {
   fmtClock,
   Intensity,
   Level,
+  label as fmtLabel,
 } from "@/lib/types";
 import { createWorkout, BuilderBlock } from "@/app/actions";
 
@@ -153,7 +154,7 @@ function ChipRow({
               : "border-neutral-200 bg-white text-neutral-600 hover:border-neutral-300"
           }`}
         >
-          {o.replace("_", " ")}
+          {fmtLabel(o)}
         </button>
       ))}
     </div>

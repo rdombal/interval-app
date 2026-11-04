@@ -167,16 +167,63 @@ export function recommendWorkouts(
     .map((x) => x.w);
 }
 
-// Compact, do-it-anywhere movement ideas shown on the workout detail page.
-export const PHASE_TIPS: Record<PhaseType, string> = {
-  warmup:
-    "Easy pace with light dynamic moves — leg swings, arm circles, a few build-up strides.",
-  work:
-    "Go hard on whatever you've got: sprint in place, burpees, high knees, or jump squats — or an assault bike, rower, or hill sprint.",
-  rest:
-    "Full rest. Stand tall or walk it off, drop your shoulders, and get your breath back.",
-  recovery:
-    "Keep moving easy: a slow jog, gentle spin, or relaxed walk to stay loose.",
-  cooldown:
-    "Ease down with an easy walk or spin, then a few gentle stretches.",
+// Display label for stored slugs: "fat_loss" -> "fat loss", with the
+// acronyms the library uses kept in their proper case. Pair with the
+// `capitalize` class (or `titleCase`) for sentence-style labels.
+const ACRONYMS: Record<string, string> = { hiit: "HIIT", vo2max: "VO2max", emom: "EMOM", amrap: "AMRAP" };
+
+export function label(slug: string): string {
+  return slug
+    .replace(/[_-]+/g, " ")
+    .split(" ")
+    .map((w) => ACRONYMS[w.toLowerCase()] ?? w)
+    .join(" ");
+}
+
+export function titleCase(slug: string): string {
+  return label(slug).replace(/\b([a-z])/g, (c) => c.toUpperCase());
+}
+
+// Movement ideas shown on the workout detail page. Work and warm-up advice
+// depends on the sport so a running protocol doesn't suggest burpees.
+type SportKey = "running" | "cycling" | "strength" | "mobility" | "default";
+
+const TIPS: Record<SportKey, Partial<Record<PhaseType, string>>> = {
+  running: {
+    warmup: "Easy jog, then a few leg swings and 3 or 4 short build-up strides.",
+    work: "Run at the effort in the phase name. Track, road, treadmill or a steady hill all work.",
+    recovery: "Slow jog or brisk walk. Keep moving so you're ready for the next rep.",
+  },
+  cycling: {
+    warmup: "Easy spin, adding a couple of short pickups near the end.",
+    work: "Push to the effort in the phase name on a road bike, spin bike or air bike.",
+    recovery: "Easy spin with light resistance. Let your breathing settle.",
+  },
+  strength: {
+    warmup: "Light dynamic moves: bodyweight squats, arm circles, hip hinges.",
+    work: "Pick one or two moves you can hold good form on: squats, push-ups, kettlebell swings or lunges.",
+  },
+  mobility: {
+    warmup: "Gentle full-body movement and slow breathing.",
+    work: "Move slowly through each position: hip openers, cat-cow, thoracic rotations.",
+  },
+  default: {
+    warmup: "Easy pace with light dynamic moves: leg swings, arm circles, a few build-ups.",
+    work: "Go hard on whatever you've got: high knees, burpees, jump squats, or a bike or rower.",
+  },
 };
+
+const SHARED_TIPS: Record<PhaseType, string> = {
+  warmup: TIPS.default.warmup!,
+  work: TIPS.default.work!,
+  rest: "Full rest. Stand tall or walk it off and get your breath back.",
+  recovery: "Keep moving easy: a slow jog, gentle spin or relaxed walk.",
+  cooldown: "Ease down with an easy walk or spin, then a few gentle stretches.",
+};
+
+export function phaseTip(type: PhaseType, sport: string): string {
+  const key: SportKey = ["running", "cycling", "strength", "mobility"].includes(sport)
+    ? (sport as SportKey)
+    : "default";
+  return TIPS[key][type] ?? SHARED_TIPS[type];
+}

@@ -19,9 +19,14 @@ exception when duplicate_object then null; end $$;
 
 -- ---------- profiles ----------
 create table if not exists profiles (
-  id           uuid primary key references auth.users(id) on delete cascade,
-  display_name text,
-  created_at   timestamptz not null default now()
+  id            uuid primary key references auth.users(id) on delete cascade,
+  display_name  text,
+  training_for  text,
+  primary_goal  text,
+  primary_sport text,
+  level         text,
+  created_at    timestamptz not null default now(),
+  updated_at    timestamptz not null default now()
 );
 
 -- Auto-create a profile when a user signs up
@@ -116,9 +121,12 @@ create policy "profiles self update" on profiles for update using (auth.uid() = 
 drop policy if exists "workouts read"       on workouts;
 create policy "workouts read"       on workouts for select using (is_public or owner_id = auth.uid());
 drop policy if exists "workouts insert own" on workouts;
-create policy "workouts insert own" on workouts for insert with check (owner_id = auth.uid());
+-- Users can't publish into the shared library: only owner_id-null rows are public.
+create policy "workouts insert own" on workouts for insert
+  with check (owner_id = auth.uid() and is_public = false);
 drop policy if exists "workouts update own" on workouts;
-create policy "workouts update own" on workouts for update using (owner_id = auth.uid());
+create policy "workouts update own" on workouts for update
+  using (owner_id = auth.uid()) with check (owner_id = auth.uid() and is_public = false);
 drop policy if exists "workouts delete own" on workouts;
 create policy "workouts delete own" on workouts for delete using (owner_id = auth.uid());
 

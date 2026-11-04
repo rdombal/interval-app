@@ -10,7 +10,9 @@ import {
   fmtClock,
   fmtDuration,
   PHASE_STYLES,
-  PHASE_TIPS,
+  phaseTip,
+  label,
+  titleCase,
   PhaseType,
 } from "@/lib/types";
 
@@ -38,12 +40,12 @@ export default async function WorkoutDetail({
   const facts: [string, string][] = [
     ["Total time", fmtDuration(total)],
     ["Intervals", String(workCount)],
-    ["Intensity", workout.intensity],
-    ["Level", workout.level],
-    ["Sport", workout.sport],
-    ["Goal", workout.goal.replace("_", " ")],
-    ["Location", workout.location],
-    ["Equipment", workout.equipment.length ? workout.equipment.join(", ") : "None"],
+    ["Intensity", titleCase(workout.intensity)],
+    ["Level", titleCase(workout.level)],
+    ["Sport", titleCase(workout.sport)],
+    ["Goal", titleCase(workout.goal)],
+    ["Location", titleCase(workout.location)],
+    ["Equipment", workout.equipment.length ? titleCase(workout.equipment.join(", ")) : "None"],
   ];
 
   return (
@@ -71,7 +73,7 @@ export default async function WorkoutDetail({
       <div className="mt-4 flex flex-wrap gap-2">
         {workout.training_effects.map((e) => (
           <Badge key={e} className="bg-mint-50 capitalize text-mint-700">
-            {e.replace("_", " ")}
+            {label(e)}
           </Badge>
         ))}
         {workout.tags.map((t) => (
@@ -79,7 +81,7 @@ export default async function WorkoutDetail({
             key={t}
             className="border border-neutral-200 bg-neutral-50 capitalize text-neutral-600"
           >
-            {t.replace(/-/g, " ")}
+            {label(t)}
           </Badge>
         ))}
       </div>
@@ -96,7 +98,7 @@ export default async function WorkoutDetail({
         {facts.map(([k, v]) => (
           <div key={k} className="rounded-2xl border border-neutral-200 bg-white p-4">
             <p className="text-xs uppercase tracking-wide text-neutral-400">{k}</p>
-            <p className="mt-1 font-semibold capitalize text-neutral-900">{v}</p>
+            <p className="mt-1 font-semibold text-neutral-900">{v}</p>
           </div>
         ))}
       </div>
@@ -144,7 +146,7 @@ export default async function WorkoutDetail({
                 <span className={`mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full ${PHASE_STYLES[t].bar}`} />
                 <div>
                   <p className="font-semibold text-neutral-800">{PHASE_STYLES[t].label}</p>
-                  <p className="text-sm text-neutral-500">{PHASE_TIPS[t]}</p>
+                  <p className="text-sm text-neutral-500">{phaseTip(t, workout.sport)}</p>
                 </div>
               </div>
             ))}
